@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web & App Services</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
+        body { background-color: #FFFFFF; color: #1a1a1a; overflow-x: hidden; }
+
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 5%; border-bottom: 1px solid #ddd;
+            position: sticky; top: 0; background: #fff; z-index: 1000;
+        }
+        .logo { font-weight: 800; font-size: 20px; color: #222; cursor: pointer; }
+        .lang-selector { background: #222; color: #fff; padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+
+        .container { padding: 40px 5%; max-width: 1200px; margin: auto; }
+        #main-page { display: block; }
+        .section-title { text-align: center; margin-bottom: 40px; text-transform: uppercase; font-size: 1.8rem; letter-spacing: 1px; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        .card { border: 1px solid #333; padding: 35px 20px; text-align: center; transition: 0.3s; background: #fff; }
+        .card:hover { border-color: #000; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .card h3 { font-size: 18px; margin-bottom: 20px; }
+
+        .detail-btn { background: #1a1a1a; color: #fff; border: none; padding: 12px; cursor: pointer; width: 100%; font-weight: bold; text-transform: uppercase; }
+
+        #detail-page { display: none; padding: 40px 5%; max-width: 800px; margin: auto; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .back-btn { background: none; border: none; font-size: 16px; cursor: pointer; margin-bottom: 30px; font-weight: bold; display: flex; align-items: center; gap: 10px; color: #222; }
+        .price-tag { font-size: 26px; font-weight: 900; margin: 15px 0; color: #000; display: block; border-bottom: 2px solid #000; padding-bottom: 5px; width: fit-content; }
+        .description-text { margin: 25px 0; line-height: 1.8; color: #444; text-align: justify; }
+        .photo-group { display: flex; flex-direction: column; gap: 25px; margin: 35px 0; }
+        .photo-group img { width: 100%; border: 1px solid #eee; object-fit: cover; background: #f9f9f9; }
+        .buy-btn { background: #000; color: #fff; border: none; padding: 20px; cursor: pointer; font-weight: bold; text-decoration: none; display: block; width: 100%; text-align: center; font-size: 18px; margin-top: 20px; }
+
+        footer { border-top: 1px solid #eee; padding: 40px 5% 20px; margin-top: 60px; text-align: center; }
+        .footer-flex { display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 15px; }
+        .footer-icons a { color: #222; text-decoration: none; margin: 0 15px; font-size: 22px; }
+        .privacy-link { color: #444; text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 8px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo" onclick="goHome()">APP/WEB EXPERT</div>
+    <select class="lang-selector" id="langSwitch" onchange="updateUI()">
+        <option value="en">English</option>
+        <option value="my" selected>မြန်မာ</option>
+        <option value="th">ภาษาไทย</option>
+    </select>
+</header>
+
+<div id="main-page" class="container">
+    <h2 class="section-title" id="mainTitle">Website Categories</h2>
+    <div class="grid" id="websiteGrid"></div>
+</div>
+
+<div id="detail-page">
+    <button class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i> <span id="backText">နောက်သို့ပြန်သွားရန်</span></button>
+    <h1 id="detTitle">Website Name</h1>
+    <span class="price-tag" id="detPrice">0 Baht</span>
+    <div class="description-text" id="detDesc"></div>
+    <div class="photo-group" id="detPhotos"></div>
+    <a href="https://www.facebook.com/share/1HGhQ4hVEf/" class="buy-btn" id="buyBtnText" target="_blank">ရယူရန် (Fb သို့)</a>
+</div>
+
+<footer>
+    <div class="footer-flex">
+        <div class="footer-icons">
+            <a href="https://www.facebook.com/share/1HGhQ4hVEf/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.tiktok.com/@dailywageapp" target="_blank"><i class="fab fa-tiktok"></i></a>
+            <a href="tel:0618201594"><i class="fas fa-phone-alt"></i></a>
+        </div>
+        <a href="#" class="privacy-link"><i class="fas fa-user-shield"></i> Privacy Policy</a>
+        <div style="font-size: 12px; color: #888; margin-top: 10px;">© 2024 DEV MASTER.</div>
+    </div>
+</footer>
+
+<script>
+    const webData = {
+    my: {
+        mainTitle: "ဝက်ဆိုက်အမျိုးအစားများ",
+        btnLabel: "အသေးစိတ်ကြည့်ရှုရန်",
+        buyBtn: "ရယူရန် (Fb သို့)",
+        back: "နောက်သို့ပြန်သွားရန်",
+        priceLabel: "ဈေးနှုန်း: ",
+        types: [
+            { id: 1, name: "အရောင်းဝက်ဆိုက် (Online Shop)", price: "5,500 Baht", desc: "ပစ္စည်းများကို စနစ်တကျ ပြသရောင်းချရန်နှင့် အွန်လိုင်းမှ မှာယူမှုများ လက်ခံရန် အကောင်းဆုံးဖြစ်သည်။", img1: "https://i.postimg.cc/5Nwmxxcy/Onile_shop1024x1024.jpg", img2: "https://i.postimg.cc/kXxynnrQ/premium_vector_1731749847681_8a2f67e7e23f.png", img3: "https://i.postimg.cc/xqD8qDzR/online.jpg" },
+            { id: 2, name: "ကုမ္ပဏီမိတ်ဆက် (Portfolio)", price: "3,500 Baht", desc: "သင့်လုပ်ငန်း သို့မဟုတ် ဝန်ဆောင်မှုများကို ပရော်ဖက်ရှင်နယ်ဆန်ဆန် မိတ်ဆက်ပြသရန်ဖြစ်သည်။", img1: "https://i.postimg.cc/Yqw9F8Bm/premium_vector_1732786156193_d49f4b732d10.png", img2: "https://i.postimg.cc/bNjJnLfS/premium_vector_1732319937301_145741e18bbb.png", img3: "https://i.postimg.cc/gkPJh4bx/photo_1649442746245_f51f4b76963f.jpg" },
+            { id: 3, name: "ပညာရေးဝက်ဆိုက် (LMS)", price: "7,000 Baht", desc: "သင်ခန်းစာများ သင်ကြားရန်နှင့် ဗီဒီယိုများ တင်ရန် အသုံးပြုနိုင်ပါသည်။", img1: "https://i.postimg.cc/RhZgpKjF/istockphoto_1438352339_612x612.webp", img2: "https://i.postimg.cc/vTZ02fpc/istockphoto_1479879699_612x612.webp", img3: "https://i.postimg.cc/cCLFkwVv/istockphoto_2251087594_612x612.webp" },
+            { id: 4, name: "အိမ်ခြံမြေ (Real Estate)", price: "6,500 Baht", desc: "အိမ်၊ ခြံ၊ မြေ အဝယ်အရောင်းနှင့် အငှားကြော်ငြာများကို စနစ်တကျ ပြသရန်ဖြစ်သည်။", img1: "https://i.postimg.cc/NM96KbqV/Custom_Websites_Delivered_Fast.jpg", img2: "https://i.postimg.cc/hjzLXMW6/Just_Home_Real_Estate_HTML_Template.jpg", img3: "https://i.postimg.cc/TwLVKQMB/Real_Estate_Landing_Page_Replication_Rukayat_Yaro.jpg" },
+            { id: 5, name: "စားသောက်ဆိုင် (Restaurant)", price: "3,800 Baht", desc: "မီနူးများ ပြသရန်နှင့် အွန်လိုင်းမှ မှာယူနိုင်ရန်အတွက် ဖြစ်သည်။", img1: "https://i.postimg.cc/YCTqpxRp/6012fff9a191232af8b210dcd88d9d8d.jpg", img2: "https://i.postimg.cc/Cx9LF47h/de15fab868c6d3749340e5b385519549.jpg", img3: "https://i.postimg.cc/dVgtq96V/26160bd4b1aa17c35eef872911b4e738.jpg" },
+            { id: 6, name: "ဘွတ်ကင်စနစ် (Booking)", price: "6,000 Baht", desc: "ဟိုတယ်၊ ဆေးခန်း သို့မဟုတ် ရက်ချိန်းယူရန်အတွက် အသုံးပြုနိုင်ပါသည်။", img1: "https://i.postimg.cc/MGD6y8x6/73f7608b55dc5d1da4a030dc0183b395.jpg", img2: "https://i.postimg.cc/k5cJxd9M/e6bb8cc4135cf36a3fb3ff6c675726da.jpg", img3: "https://i.postimg.cc/hGrD9qgP/0e1b9429313fa2a3d04065174caf2495.jpg" },
+            { id: 7, name: "သတင်းဝက်ဆိုက် (News)", price: "5,200 Baht", desc: "သတင်းအချက်အလက်များကို အချိန်နှင့်တပြေးညီ တင်ပြရန်အတွက် ဖြစ်သည်။", img1: "https://i.postimg.cc/fTL8s7JM/78dc79146636c29a5f779ca17b1c8f13.jpg", img2: "https://i.postimg.cc/xTC6QGcT/09ee509f5d646bf0a1e8772cc49c90c4.jpg", img3: "https://i.postimg.cc/Dy03NXTR/f3929c28c67ae0ae18b98b3aa9044d3d.jpg" },
+            { id: 8, name: "ဆေးခန်းဝက်ဆိုက် (Clinic)", price: "5,800 Baht", desc: "ဆေးခန်းအချက်အလက်များနှင့် လူနာရက်ချိန်းယူရန်အတွက် ဖြစ်သည်။", img1: "https://i.postimg.cc/vHN3Z1Vw/cafc30442f079addc2d5ee0aab9cc9ad.jpg", img2: "https://i.postimg.cc/MKT9w0v6/48c971707828863ab1a013b7a0a08a80.jpg", img3: "https://i.postimg.cc/m258gcHx/307537a94e40b044dc712cc99efb14db.jpg" },
+            { id: 9, name: "ကိုယ်ပိုင် Blog", price: "2,500 Baht", desc: "သင့်အတွေ့အကြုံနှင့် ဆောင်းပါးများ ရေးသားရန်အတွက် ဖြစ်သည်။", img1: "https://i.postimg.cc/15jJ3gqs/0cacea43bd4fc66596e90676603b1380.jpg", img2: "https://i.postimg.cc/jdFZSW7R/5a706bc9941dba8ddd5c1f9c60f0e61e.jpg", img3: "https://i.postimg.cc/tCM241xH/48bc51045edcfbdee20290fa442201b6.jpg" },
+            { id: 10, name: "အဖွဲ့အစည်း (NGO)", price: "4,200 Baht", desc: "အဖွဲ့အစည်း၏ လုပ်ဆောင်ချက်များကို ပြသရန်အတွက် ဖြစ်သည်။", img1: "https://i.postimg.cc/J42Pzykn/7957363974338929ca9c6138765eeeb4.jpg", img2: "https://i.postimg.cc/8P0tzF6f/1788ed92239bc6fcea37c3f3ad753d1f.jpg", img3: "https://i.postimg.cc/bNB3wGtG/b28dcadca425850e9a02ddbc853dca18.jpg" }
+        ]
+    },
+    en: {
+        mainTitle: "Website Categories",
+        btnLabel: "View Details",
+        buyBtn: "Get Now (to Fb)",
+        back: "Go Back",
+        priceLabel: "Price: ",
+        types: [
+            { id: 1, name: "Online Shop", price: "5,500 Baht", desc: "Best for systematically displaying products and accepting online orders.", img1: "https://i.postimg.cc/5Nwmxxcy/Onile_shop1024x1024.jpg", img2: "https://i.postimg.cc/kXxynnrQ/premium_vector_1731749847681_8a2f67e7e23f.png", img3: "https://i.postimg.cc/xqD8qDzR/online.jpg" },
+            { id: 2, name: "Business Portfolio", price: "3,500 Baht", desc: "Professional introduction of your business or services.", img1: "https://i.postimg.cc/Yqw9F8Bm/premium_vector_1732786156193_d49f4b732d10.png", img2: "https://i.postimg.cc/bNjJnLfS/premium_vector_1732319937301_145741e18bbb.png", img3: "https://i.postimg.cc/gkPJh4bx/photo_1649442746245_f51f4b76963f.jpg" },
+            { id: 3, name: "Education (LMS)", price: "7,000 Baht", desc: "Suitable for teaching lessons and uploading educational videos.", img1: "https://i.postimg.cc/RhZgpKjF/istockphoto_1438352339_612x612.webp", img2: "https://i.postimg.cc/vTZ02fpc/istockphoto_1479879699_612x612.webp", img3: "https://i.postimg.cc/cCLFkwVv/istockphoto_2251087594_612x612.webp" },
+            { id: 4, name: "Real Estate", price: "6,500 Baht", desc: "Display property sales and rentals systematically.", img1: "https://i.postimg.cc/NM96KbqV/Custom_Websites_Delivered_Fast.jpg", img2: "https://i.postimg.cc/hjzLXMW6/Just_Home_Real_Estate_HTML_Template.jpg", img3: "https://i.postimg.cc/TwLVKQMB/Real_Estate_Landing_Page_Replication_Rukayat_Yaro.jpg" },
+            { id: 5, name: "Restaurant", price: "3,800 Baht", desc: "For displaying menus and accepting online orders.", img1: "https://i.postimg.cc/YCTqpxRp/6012fff9a191232af8b210dcd88d9d8d.jpg", img2: "https://i.postimg.cc/Cx9LF47h/de15fab868c6d3749340e5b385519549.jpg", img3: "https://i.postimg.cc/dVgtq96V/26160bd4b1aa17c35eef872911b4e738.jpg" },
+            { id: 6, name: "Booking System", price: "6,000 Baht", desc: "Can be used for hotels, clinics, or appointments.", img1: "https://i.postimg.cc/MGD6y8x6/73f7608b55dc5d1da4a030dc0183b395.jpg", img2: "https://i.postimg.cc/k5cJxd9M/e6bb8cc4135cf36a3fb3ff6c675726da.jpg", img3: "https://i.postimg.cc/hGrD9qgP/0e1b9429313fa2a3d04065174caf2495.jpg" },
+            { id: 7, name: "News Portal", price: "5,200 Baht", desc: "For presenting information and news in real-time.", img1: "https://i.postimg.cc/fTL8s7JM/78dc79146636c29a5f779ca17b1c8f13.jpg", img2: "https://i.postimg.cc/xTC6QGcT/09ee509f5d646bf0a1e8772cc49c90c4.jpg", img3: "https://i.postimg.cc/Dy03NXTR/f3929c28c67ae0ae18b98b3aa9044d3d.jpg" },
+            { id: 8, name: "Clinic Website", price: "5,800 Baht", desc: "For clinic info and patient appointment management.", img1: "https://i.postimg.cc/vHN3Z1Vw/cafc30442f079addc2d5ee0aab9cc9ad.jpg", img2: "https://i.postimg.cc/MKT9w0v6/48c971707828863ab1a013b7a0a08a80.jpg", img3: "https://i.postimg.cc/m258gcHx/307537a94e40b044dc712cc99efb14db.jpg" },
+            { id: 9, name: "Personal Blog", price: "2,500 Baht", desc: "For writing articles and sharing your experiences.", img1: "https://i.postimg.cc/15jJ3gqs/0cacea43bd4fc66596e90676603b1380.jpg", img2: "https://i.postimg.cc/jdFZSW7R/5a706bc9941dba8ddd5c1f9c60f0e61e.jpg", img3: "https://i.postimg.cc/tCM241xH/48bc51045edcfbdee20290fa442201b6.jpg" },
+            { id: 10, name: "Organization (NGO)", price: "4,200 Baht", desc: "To showcase activities and missions of the organization.", img1: "https://i.postimg.cc/J42Pzykn/7957363974338929ca9c6138765eeeb4.jpg", img2: "https://i.postimg.cc/8P0tzF6f/1788ed92239bc6fcea37c3f3ad753d1f.jpg", img3: "https://i.postimg.cc/bNB3wGtG/b28dcadca425850e9a02ddbc853dca18.jpg" }
+        ]
+    },
+    th: {
+        mainTitle: "ประเภทเว็บไซต์",
+        btnLabel: "ดูรายละเอียด",
+        buyBtn: "สั่งซื้อ (ไปที่ Fb)",
+        back: "ย้อนกลับ",
+        priceLabel: "ราคา: ",
+        types: [
+            { id: 1, name: "ร้านค้าออนไลน์ (Online Shop)", price: "5,500 Baht", desc: "เหมาะสำหรับแสดงสินค้าและรับออเดอร์ออนไลน์อย่างเป็นระบบ", img1: "https://i.postimg.cc/5Nwmxxcy/Onile_shop1024x1024.jpg", img2: "https://i.postimg.cc/kXxynnrQ/premium_vector_1731749847681_8a2f67e7e23f.png", img3: "https://i.postimg.cc/xqD8qDzR/online.jpg" },
+            { id: 2, name: "พอร์ตโฟลิโอธุรกิจ (Portfolio)", price: "3,500 Baht", desc: "แนะนำธุรกิจหรือบริการของคุณอย่างมืออาชีพ", img1: "https://i.postimg.cc/Yqw9F8Bm/premium_vector_1732786156193_d49f4b732d10.png", img2: "https://i.postimg.cc/bNjJnLfS/premium_vector_1732319937301_145741e18bbb.png", img3: "https://i.postimg.cc/gkPJh4bx/photo_1649442746245_f51f4b76963f.jpg" },
+            { id: 3, name: "การศึกษา (LMS)", price: "7,000 Baht", desc: "เหมาะสำหรับบทเรียนและการอัปโหลดวิดีโอการศึกษา", img1: "https://i.postimg.cc/RhZgpKjF/istockphoto_1438352339_612x612.webp", img2: "https://i.postimg.cc/vTZ02fpc/istockphoto_1479879699_612x612.webp", img3: "https://i.postimg.cc/cCLFkwVv/istockphoto_2251087594_612x612.webp" },
+            { id: 4, name: "อสังหาริมทรัพย์ (Real Estate)", price: "6,500 Baht", desc: "แสดงประกาศขายและเช่าบ้านหรือที่ดินอย่างเป็นระบบ", img1: "https://i.postimg.cc/NM96KbqV/Custom_Websites_Delivered_Fast.jpg", img2: "https://i.postimg.cc/hjzLXMW6/Just_Home_Real_Estate_HTML_Template.jpg", img3: "https://i.postimg.cc/TwLVKQMB/Real_Estate_Landing_Page_Replication_Rukayat_Yaro.jpg" },
+            { id: 5, name: "ร้านอาหาร (Restaurant)", price: "3,800 Baht", desc: "สำหรับการแสดงเมนูและรับสั่งอาหารออนไลน์", img1: "https://i.postimg.cc/YCTqpxRp/6012fff9a191232af8b210dcd88d9d8d.jpg", img2: "https://i.postimg.cc/Cx9LF47h/de15fab868c6d3749340e5b385519549.jpg", img3: "https://i.postimg.cc/dVgtq96V/26160bd4b1aa17c35eef872911b4e738.jpg" },
+            { id: 6, name: "ระบบจอง (Booking)", price: "6,000 Baht", desc: "สามารถใช้กับโรงแรม คลินิก หรือการนัดหมายต่างๆ", img1: "https://i.postimg.cc/MGD6y8x6/73f7608b55dc5d1da4a030dc0183b395.jpg", img2: "https://i.postimg.cc/k5cJxd9M/e6bb8cc4135cf36a3fb3ff6c675726da.jpg", img3: "https://i.postimg.cc/hGrD9qgP/0e1b9429313fa2a3d04065174caf2495.jpg" },
+            { id: 7, name: "พอร์ทัลข่าว (News)", price: "5,200 Baht", desc: "สำหรับการนำเสนอข้อมูลและข่าวสารแบบเรียลไทม์", img1: "https://i.postimg.cc/fTL8s7JM/78dc79146636c29a5f779ca17b1c8f13.jpg", img2: "https://i.postimg.cc/xTC6QGcT/09ee509f5d646bf0a1e8772cc49c90c4.jpg", img3: "https://i.postimg.cc/Dy03NXTR/f3929c28c67ae0ae18b98b3aa9044d3d.jpg" },
+            { id: 8, name: "เว็บไซต์คลินิก (Clinic)", price: "5,800 Baht", desc: "สำหรับข้อมูลคลินิกและการนัดหมายผู้ป่วย", img1: "https://i.postimg.cc/vHN3Z1Vw/cafc30442f079addc2d5ee0aab9cc9ad.jpg", img2: "https://i.postimg.cc/MKT9w0v6/48c971707828863ab1a013b7a0a08a80.jpg", img3: "https://i.postimg.cc/m258gcHx/307537a94e40b044dc712cc99efb14db.jpg" },
+            { id: 9, name: "บล็อกส่วนตัว (Personal Blog)", price: "2,500 Baht", desc: "สำหรับการเขียนบทความและแบ่งปันประสบการณ์ของคุณ", img1: "https://i.postimg.cc/15jJ3gqs/0cacea43bd4fc66596e90676603b1380.jpg", img2: "https://i.postimg.cc/jdFZSW7R/5a706bc9941dba8ddd5c1f9c60f0e61e.jpg", img3: "https://i.postimg.cc/tCM241xH/48bc51045edcfbdee20290fa442201b6.jpg" },
+            { id: 10, name: "องค์กร (NGO)", price: "4,200 Baht", desc: "เพื่อแสดงกิจกรรมและพันธกิจขององค์กร", img1: "https://i.postimg.cc/J42Pzykn/7957363974338929ca9c6138765eeeb4.jpg", img2: "https://i.postimg.cc/8P0tzF6f/1788ed92239bc6fcea37c3f3ad753d1f.jpg", img3: "https://i.postimg.cc/bNB3wGtG/b28dcadca425850e9a02ddbc853dca18.jpg" }
+        ]
+    }
+};
+
+    function updateUI() {
+        const lang = document.getElementById('langSwitch').value;
+        const data = webData[lang] || webData['my'];
+        document.getElementById('mainTitle').innerText = data.mainTitle;
+        const grid = document.getElementById('websiteGrid');
+        grid.innerHTML = '';
+        data.types.forEach(web => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `<h3>${web.name}</h3><button class="detail-btn" onclick="showDetails(${web.id})">${data.btnLabel}</button>`;
+            grid.appendChild(card);
+        });
+    }
+
+    function showDetails(id) {
+        const lang = document.getElementById('langSwitch').value;
+        const currentData = webData[lang] || webData['my'];
+        const selected = currentData.types.find(w => w.id === id);
+        
+        document.getElementById('detTitle').innerText = selected.name;
+        document.getElementById('detPrice').innerText = currentData.priceLabel + selected.price;
+        document.getElementById('detDesc').innerText = selected.desc;
+        document.getElementById('buyBtnText').innerText = currentData.buyBtn;
+        document.getElementById('backText').innerText = currentData.back;
+        
+        const photoGroup = document.getElementById('detPhotos');
+        photoGroup.innerHTML = `
+            <img src="${selected.img1}" onerror="this.style.display='none'">
+            <img src="${selected.img2}" onerror="this.style.display='none'">
+            <img src="${selected.img3}" onerror="this.style.display='none'">
+        `;
+
+        document.getElementById('main-page').style.display = 'none';
+        document.getElementById('detail-page').style.display = 'block';
+        window.scrollTo(0, 0);
+    }
+
+    function goHome() {
+        document.getElementById('main-page').style.display = 'block';
+        document.getElementById('detail-page').style.display = 'none';
+        window.scrollTo(0, 0);
+    }
+
+    updateUI();
+</script>
+</body>
+</html>
