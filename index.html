@@ -188,4 +188,145 @@
     updateUI();
 </script>
 </body>
+<div id="chat-icon" onclick="toggleChat()" style="position: fixed; bottom: 30px; right: 20px; width: 60px; height: 60px; background: #000; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,0.4); z-index: 9999; border: 2px solid #fff;">
+    <i class="fab fa-facebook-messenger"></i>
+</div>
+
+<div id="chat-box" style="display: none; position: fixed; bottom: 100px; right: 20px; width: 350px; max-width: 90%; height: 550px; background: #fff; border-radius: 20px; box-shadow: 0 15px 50px rgba(0,0,0,0.3); flex-direction: column; overflow: hidden; z-index: 9999; border: 1px solid #ddd; animation: slideUp 0.4s ease;">
+    <div style="background: #000; color: #fff; padding: 18px; font-weight: bold; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <div style="font-size: 15px; letter-spacing: 1px;">WEB EXPERT AI</div>
+            <div style="font-size: 10px; color: #4caf50; font-weight: normal;">● Online Now</div>
+        </div>
+        <i class="fas fa-times" onclick="toggleChat()" style="cursor: pointer; font-size: 20px; opacity: 0.7;"></i>
+    </div>
+    
+    <div id="chat-content" style="flex: 1; padding: 15px; overflow-y: auto; font-size: 14px; background: #f9f9f9; display: flex; flex-direction: column; gap: 12px; scroll-behavior: smooth;">
+    </div>
+
+    <div style="padding: 12px; border-top: 1px solid #eee; background: #fff;">
+        <div style="display: flex; gap: 8px; align-items: center;">
+            <input type="text" id="chat-input" placeholder="သိလိုသည်များကို မေးမြန်းပါ..." style="flex: 1; padding: 10px 15px; border: 1px solid #ddd; border-radius: 25px; outline: none; font-size: 14px;">
+            <button onclick="handleSend()" style="background: #000; color: #fff; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer;">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let askedQuestions = [];
+
+    const getWebData = () => {
+        const lang = document.getElementById('langSwitch') ? document.getElementById('langSwitch').value : 'my';
+        return typeof webData !== 'undefined' ? webData[lang] : null;
+    };
+
+    const allQuestions = (lang) => [
+        {t: "ဘာ Website တွေရှိလဲ", v: "types"},
+        {t: "ဈေးနှုန်းစာရင်းကြည့်မယ်", v: "price"},
+        {t: "ဘယ်လောက်ကြာမလဲ", v: "duration"},
+        {t: "Feature တွေဘာပါလဲ", v: "features"},
+        {t: "ဘယ် Website ရွေးသင့်လဲ", v: "advice"},
+        {t: "Payment & Bank Info", v: "payment"},
+        {t: "ဖုန်းမှာကြည့်လို့ရမလား", v: "mobile"},
+        {t: "Application လုပ်ပေးလား", v: "app"},
+        {t: "ပြုပြင်မှု (Revision)", v: "revision"},
+        {t: "အခုပဲအပ်နှံမယ်/ဆက်သွယ်ရန်", v: "contact"}
+    ];
+
+    function toggleChat() {
+        const box = document.getElementById('chat-box');
+        box.style.display = (box.style.display === 'none' || box.style.display === '') ? 'flex' : 'none';
+        if (box.style.display === 'flex' && document.getElementById('chat-content').innerHTML.trim() === "") sendWelcome();
+    }
+
+    function sendWelcome() {
+        const lang = document.getElementById('langSwitch').value;
+        askedQuestions = [];
+        botReply("မင်္ဂလာပါ! WEB EXPERT မှ ကြိုဆိုပါတယ်။ လူကြီးမင်း သိလိုသည်များကို အောက်ပါ ခလုတ်များမှတစ်ဆင့် မေးမြန်းနိုင်ပါပြီ။", allQuestions(lang));
+    }
+
+    function botReply(text, buttons = []) {
+        const content = document.getElementById('chat-content');
+        const msgDiv = document.createElement('div');
+        msgDiv.style.cssText = "align-self: flex-start; max-width: 90%; animation: fadeIn 0.3s ease;";
+        msgDiv.innerHTML = `<div style="background: #fff; color: #000; padding: 12px 15px; border-radius: 18px 18px 18px 5px; border: 1px solid #e0e0e0; line-height: 1.5; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">${text}</div>`;
+        content.appendChild(msgDiv);
+
+        const remainingButtons = buttons.filter(b => !askedQuestions.includes(b.v));
+
+        if(remainingButtons.length > 0) {
+            const btnBox = document.createElement('div');
+            btnBox.style.cssText = "display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; margin-bottom: 15px;";
+            remainingButtons.forEach(b => {
+                const btn = document.createElement('button');
+                btn.innerText = b.t;
+                btn.style.cssText = "background: #fff; border: 1.5px solid #000; color: #000; padding: 7px 12px; border-radius: 20px; cursor: pointer; font-size: 11px; font-weight: bold; transition: 0.2s; box-shadow: 2px 2px 0px #000;";
+                btn.onclick = () => { 
+                    askedQuestions.push(b.v);
+                    userMessage(b.t); 
+                    processInput(b.v); 
+                };
+                btnBox.appendChild(btn);
+            });
+            content.appendChild(btnBox);
+        }
+        content.scrollTop = content.scrollHeight;
+    }
+
+    function userMessage(text) {
+        const content = document.getElementById('chat-content');
+        const msgDiv = document.createElement('div');
+        msgDiv.style.cssText = "align-self: flex-end; max-width: 85%;";
+        msgDiv.innerHTML = `<div style="background: #000; color: #fff; padding: 10px 15px; border-radius: 18px 18px 5px 18px; line-height: 1.5;">${text}</div>`;
+        content.appendChild(msgDiv);
+        content.scrollTop = content.scrollHeight;
+    }
+
+    function processInput(input) {
+        const data = getWebData();
+        const lang = document.getElementById('langSwitch').value;
+        const qList = allQuestions(lang);
+
+        setTimeout(() => {
+            let res = "";
+            if (input === "types") {
+                res = "<b>Website အမျိုးအစားများ:</b><br>" + data.types.map(t => "• " + t.name).join("<br>");
+            } else if (input === "price") {
+                res = "<b>ဈေးနှုန်းစာရင်း:</b><br>" + data.types.map(t => `• ${t.name}: <b>${t.price}</b>`).join("<br>");
+            } else if (input === "duration") {
+                res = "ပုံမှန်အားဖြင့် <b>၃ ရက်မှ ၇ ရက်</b> အတွင်း အပြီးလက်စသတ်ပေးပါတယ်ခင်ဗျာ။";
+            } else if (input === "features") {
+                res = "Free Domain/Hosting, Mobile Responsive, SSL Security နဲ့ Social Media Integration တို့ ပါဝင်မှာ ဖြစ်ပါတယ်။";
+            } else if (input === "payment") {
+                res = "<b>K-Bank, SCB</b> (Thailand) နှင့် <b>KPay, Wave</b> (Myanmar) တို့ဖြင့် ပေးချေနိုင်ပါတယ်။";
+            } else if (input === "contact") {
+                botReply("Messenger သို့မဟုတ် ဖုန်း 0618201594 သို့ ဆက်သွယ်နိုင်ပါပြီ။", [{t: "Messenger သို့ သွားရန်", v: "fb_link"}]);
+                document.querySelector('#chat-content button:last-child').onclick = () => window.open("https://www.facebook.com/share/1HGhQ4hVEf/", "_blank");
+                return;
+            } else {
+                res = "လူကြီးမင်းအတွက် အကောင်းဆုံး ဝန်ဆောင်မှုပေးရန် အသင့်ရှိနေပါတယ်ခင်ဗျာ။";
+            }
+            botReply(res, qList);
+        }, 400);
+    }
+
+    function handleSend() {
+        const input = document.getElementById('chat-input');
+        if(!input.value.trim()) return;
+        userMessage(input.value);
+        processInput(input.value.toLowerCase());
+        input.value = '';
+    }
+    document.getElementById('chat-input').addEventListener('keypress', (e) => { if(e.key === 'Enter') handleSend(); });
+</script>
+
+<style>
+    @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    #chat-content::-webkit-scrollbar { width: 4px; }
+    #chat-content::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+</style>
 </html>
+
