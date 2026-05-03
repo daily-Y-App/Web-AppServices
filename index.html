@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web & App Services | Premium Design</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Kanit:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* THVPN Inspired Color Palette */
+            --primary-bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --accent: #38bdf8;
+            --accent-gradient: linear-gradient(90deg, #38bdf8, #818cf8);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background-color: var(--primary-bg); 
+            color: var(--text-main); 
+            font-family: 'Inter', 'Kanit', sans-serif;
+            line-height: 1.6;
+        }
+
+        /* Glassmorphism Effect */
+        .glass {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        header {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky; top: 0; z-index: 1000;
+        }
+
+        .hero {
+            background: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
+            padding: 100px 8% 60px;
+            text-align: center;
+        }
+
+        .gradient-text {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .promo-badge {
+            background: var(--accent-gradient);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(56, 189, 248, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
+        }
+
+        .card {
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+        }
+
+        /* Payment Section Styling */
+        .payment-box {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            color: #000;
+            max-width: 320px;
+            margin: 20px auto;
+        }
+
+        /* Detail Page Animations */
+        #detail-page { display: none; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .buy-btn {
+            background: var(--accent-gradient);
+            transition: 0.3s;
+        }
+        .buy-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        /* Chatbot Overrides to match new theme */
+        #chat-icon { background: var(--accent-gradient) !important; border: none !important; }
+        #chat-box { background: #1e293b !important; border: 1px solid rgba(255,255,255,0.1) !important; color: white !important; }
+        #chat-content div > div { background: #334155 !important; color: white !important; border: none !important; }
+    </style>
+</head>
+<body>
+
+<header class="py-4 px-[8%] flex justify-between items-center">
+    <div class="text-2xl font-black tracking-tighter cursor-pointer" onclick="goHome()">
+        WEB<span class="text-sky-400">EXPERT</span>
+    </div>
+    <select class="bg-slate-800 text-white border border-slate-700 rounded-lg px-3 py-2 text-sm outline-none cursor-pointer" id="langSwitch" onchange="updateUI()">
+        <option value="en">English</option>
+        <option value="my" selected>မြန်မာ</option>
+        <option value="th">ภาษาไทย</option>
+    </select>
+</header>
+
+<div id="main-page">
+    <div class="hero">
+        <div class="promo-badge inline-block px-4 py-1 rounded-full text-xs font-bold mb-4" id="promoText">30% OFF SPECIAL OFFER</div>
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-6" id="heroTitle">Professional Web Services</h1>
+        <p class="text-slate-400 text-lg max-w-2xl mx-auto" id="heroSubtitle">Quality websites at affordable prices. Limited time discount!</p>
+    </div>
+    
+    <div class="container mx-auto px-[8%] pb-20">
+        <h2 class="text-3xl font-bold mb-10 text-center" id="mainTitle">Website Categories</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="websiteGrid">
+            </div>
+    </div>
+</div>
+
+<div id="detail-page" class="max-w-4xl mx-auto px-6 py-12">
+    <button class="flex items-center gap-2 text-sky-400 font-bold mb-8 hover:translate-x-[-5px] transition-all" onclick="goHome()">
+        <i class="fas fa-arrow-left"></i> <span id="backText">နောက်သို့ပြန်သွားရန်</span>
+    </button>
+    
+    <div class="grid md:grid-cols-2 gap-10">
+        <div>
+            <h1 class="text-4xl font-black mb-4 gradient-text" id="detTitle">Website Name</h1>
+            <div class="flex items-baseline gap-4 mb-6">
+                <span class="text-slate-500 line-through text-lg" id="detOldPrice">0 Baht</span>
+                <span class="text-3xl font-bold text-white" id="detPrice">0 Baht</span>
+            </div>
+            <p class="text-slate-300 text-lg leading-relaxed mb-8 p-6 glass rounded-2xl border-l-4 border-sky-400" id="detDesc"></p>
+            
+            <a href="https://www.facebook.com/share/1HGhQ4hVEf/" class="buy-btn block text-center py-4 rounded-xl font-bold text-lg mb-4" id="buyBtnText" target="_blank">
+                ရယူရန် (Fb သို့)
+            </a>
+        </div>
+
+        <div class="glass p-8 rounded-3xl text-center">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c5/PromptPay-logo.png" alt="PromptPay" class="h-8 mx-auto mb-4 invert">
+            <h3 class="text-lg font-bold mb-4 text-sky-300">Scan to Pay (PromptPay)</h3>
+            <div class="payment-box">
+                <img src="https://i.postimg.cc/hG8vNRwQ/-20260502-111055.png" alt="Payment QR" class="w-full h-auto rounded-lg">
+            </div>
+            <p class="text-xs text-slate-400 mt-4 italic">QR ကို Scan ဖတ်ပြီး ငွေပေးချေမှုကို အတည်ပြုပေးပါ။</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 mt-12" id="detPhotos"></div>
+</div>
+
+<footer class="glass border-t border-white/5 py-16 text-center">
+    <div class="flex flex-col gap-8">
+        <div class="flex justify-center gap-6">
+            <a href="https://www.facebook.com/share/1HGhQ4hVEf/" class="w-12 h-12 flex items-center justify-center rounded-full glass hover:bg-sky-500 transition-all text-xl"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.tiktok.com/@dailywageapp" class="w-12 h-12 flex items-center justify-center rounded-full glass hover:bg-sky-500 transition-all text-xl"><i class="fab fa-tiktok"></i></a>
+            <a href="tel:0618201594" class="w-12 h-12 flex items-center justify-center rounded-full glass hover:bg-sky-500 transition-all text-xl"><i class="fas fa-phone-alt"></i></a>
+        </div>
+        <p class="text-slate-500 text-sm">© 2026 DEV MASTER. ALL RIGHTS RESERVED.</p>
+    </div>
+</footer>
+
+<script>
+    const webData = {
+        my: {
+            promo: "၃၀% အထူးလျှော့စျေး",
+            heroT: "Professional Web Services",
+            heroS: "အရည်အသွေးမြင့် ဝက်ဘ်ဆိုက်များကို သင့်တင့်သောစျေးနှုန်းဖြင့် ရယူပါ။ ကန့်သတ်ထားသော အချိန်အတွင်း လျှော့စျေး!",
+            mainTitle: "ဝက်ဆိုက်အမျိုးအစားများ",
+            btnLabel: "အသေးစိတ်ကြည့်ရှုရန်",
+            buyBtn: "အခုပဲအပ်နှံမည် (Fb သို့)",
+            back: "နောက်သို့ပြန်သွားရန်",
+            priceLabel: "ယခုစျေးနှုန်း: ",
+            types: [
+                { id: 1, name: "အရောင်းဝက်ဆိုက် (Online Shop)", price: 3850, oldPrice: 5500, desc: "ပစ္စည်းများကို စနစ်တကျ ပြသရောင်းချရန်နှင့် အွန်လိုင်းမှ မှာယူမှုများ လက်ခံရန် အကောင်းဆုံးဖြစ်သည်။", img1: "https://i.postimg.cc/5Nwmxxcy/Onile_shop1024x1024.jpg", img2: "https://i.postimg.cc/kXxynnrQ/premium_vector_1731749847681_8a2f67e7e23f.png", img3: "https://i.postimg.cc/xqD8qDzR/online.jpg" },
+                { id: 2, name: "ကုမ္ပဏီမိတ်ဆက် (Portfolio)", price: 2450, oldPrice: 3500, desc: "သင့်လုပ်ငန်း သို့မဟုတ် ဝန်ဆောင်မှုများကို ပရော်ဖက်ရှင်နယ်ဆန်ဆန် မိတ်ဆက်ပြသရန်ဖြစ်သည်။", img1: "https://i.postimg.cc/Yqw9F8Bm/premium_vector_1732786156193_d49f4b732d10.png", img2: "https://i.postimg.cc/bNjJnLfS/premium_vector_1732319937301_145741e18bbb.png", img3: "https://i.postimg.cc/gkPJh4bx/photo_1649442746245_f51f4b76963f.jpg" },
+                { id: 3, name: "ပညာရေးဝက်ဆိုက် (LMS)", price: 4900, oldPrice: 7000, desc: "သင်ခန်းစာများ သင်ကြားရန်နှင့် ဗီဒီယိုများ တင်ရန် အသုံးပြုနိုင်ပါသည်။", img1: "https://i.postimg.cc/RhZgpKjF/istockphoto_1438352339_612x612.webp", img2: "https://i.postimg.cc/vTZ02fpc/istockphoto_1479879699_612x612.webp", img3: "https://i.postimg.cc/cCLFkwVv/istockphoto_2251087594_612x612.webp" },
+                { id: 4, name: "အိမ်ခြံမြေ (Real Estate)", price: 4550, oldPrice: 6500, desc: "အိမ်၊ ခြံ၊ မြေ အဝယ်အရောင်းနှင့် အငှားကြော်ငြာများကို စနစ်တကျ ပြသရန်ဖြစ်သည်။", img1: "https://i.postimg.cc/NM96KbqV/Custom_Websites_Delivered_Fast.jpg", img2: "https://i.postimg.cc/hjzLXMW6/Just_Home_Real_Estate_HTML_Template.jpg", img3: "https://i.postimg.cc/TwLVKQMB/Real_Estate_Landing_Page_Replication_Rukayat_Yaro.jpg" },
+                { id: 5, name: "စားသောက်ဆိုင် (Restaurant)", price: 2660, oldPrice: 3800, desc: "မီနူးများ ပြသရန်နှင့် အွန်လိုင်းမှ မှာယူနိုင်ရန်အတွက် ဖြစ်သည်။", img1: "https://i.postimg.cc/YCTqpxRp/6012fff9a191232af8b210dcd88d9d8d.jpg", img2: "https://i.postimg.cc/Cx9LF47h/de15fab868c6d3749340e5b385519549.jpg", img3: "https://i.postimg.cc/dVgtq96V/26160bd4b1aa17c35eef872911b4e738.jpg" },
+                { id: 6, name: "ဘွတ်ကင်စနစ် (Booking)", price: 4200, oldPrice: 6000, desc: "ဟိုတယ်၊ ဆေးခန်း သို့မဟုတ် ရက်ချိန်းယူရန်အတွက် အသုံးပြုနိုင်ပါသည်။", img1: "https://i.postimg.cc/MGD6y8x6/73f7608b55dc5d1da4a030dc0183b395.jpg", img2: "https://i.postimg.cc/k5cJxd9M/e6bb8cc4135cf36a3fb3ff6c675726da.jpg", img3: "https://i.postimg.cc/hGrD9qgP/0e1b9429313fa2a3d04065174caf2495.jpg" },
+                { id: 7, name: "သတင်းဝက်ဆိုက် (News)", price: 3640, oldPrice: 5200, desc: "သတင်းအချက်အလက်များကို အချိန်နှင့်တပြေးညီ တင်ပြရန်အတွက် ဖြစ်သည်။", img1: "https://i.postimg.cc/fTL8s7JM/78dc79146636c29a5f779ca17b1c8f13.jpg", img2: "https://i.postimg.cc/xTC6QGcT/09ee509f5d646bf0a1e8772cc49c90c4.jpg", img3: "https://i.postimg.cc/Dy03NXTR/f3929c28c67ae0ae18b98b3aa9044d3d.jpg" },
+                { id: 8, name: "ဆေးခန်းဝက်ဆိုက် (Clinic)", price: 4060, oldPrice: 5800, desc: "ဆေးခန်းအချက်အလက်များနှင့် လူနာရက်ချိန်းယူရန်အတွက် ဖြစ်သည်။", img1: "https://i.postimg.cc/vHN3Z1Vw/cafc30442f079addc2d5ee0aab9cc9ad.jpg", img2: "https://i.postimg.cc/MKT9w0v6/48c971707828863ab1a013b7a0a08a80.jpg", img3: "https://i.postimg.cc/m258gcHx/307537a94e40b044dc712cc99efb14db.jpg" },
+                { id: 9, name: "ကိုယ်ပိုင် Blog", price: 1750, oldPrice: 2500, desc: "သင့်အတွေ့အကြုံနှင့် ဆောင်းပါးများ ရေးသားရန်အတွက် ဖြစ်သည်။", img1: "https://i.postimg.cc/15jJ3gqs/0cacea43bd4fc66596e90676603b1380.jpg", img2: "https://i.postimg.cc/jdFZSW7R/5a706bc9941dba8ddd5c1f9c60f0e61e.jpg", img3: "https://i.postimg.cc/tCM241xH/48bc51045edcfbdee20290fa442201b6.jpg" },
+                { id: 10, name: "အဖွဲ့အစည်း (NGO)", price: 2940, oldPrice: 4200, desc: "အဖွဲ့အစည်း၏ လုပ်ဆောင်ချက်များကို ပြသရန်အတွက် ဖြစ်သည်။", img1: "https://i.postimg.cc/J42Pzykn/7957363974338929ca9c6138765eeeb4.jpg", img2: "https://i.postimg.cc/8P0tzF6f/1788ed92239bc6fcea37c3f3ad753d1f.jpg", img3: "https://i.postimg.cc/bNB3wGtG/b28dcadca425850e9a02ddbc853dca18.jpg" }
+            ]
+        },
+        en: {
+            promo: "30% OFF SPECIAL OFFER",
+            heroT: "Professional Web Services",
+            heroS: "Get high-quality websites at affordable prices. Limited time discount!",
+            mainTitle: "Website Categories",
+            btnLabel: "View Details",
+            buyBtn: "Order Now (to Fb)",
+            back: "Go Back",
+            priceLabel: "Now: ",
+            types: [
+                { id: 1, name: "Online Shop", price: 3850, oldPrice: 5500, desc: "Best for systematically displaying products and accepting online orders.", img1: "https://i.postimg.cc/5Nwmxxcy/Onile_shop1024x1024.jpg", img2: "https://i.postimg.cc/kXxynnrQ/premium_vector_1731749847681_8a2f67e7e23f.png", img3: "https://i.postimg.cc/xqD8qDzR/online.jpg" },
+                { id: 2, name: "Business Portfolio", price: 2450, oldPrice: 3500, desc: "Professional introduction of your business or services.", img1: "https://i.postimg.cc/Yqw9F8Bm/premium_vector_1732786156193_d49f4b732d10.png", img2: "https://i.postimg.cc/bNjJnLfS/premium_vector_1732319937301_145741e18bbb.png", img3: "https://i.postimg.cc/gkPJh4bx/photo_1649442746245_f51f4b76963f.jpg" },
+                { id: 3, name: "Education (LMS)", price: 4900, oldPrice: 7000, desc: "Suitable for teaching lessons and uploading educational videos.", img1: "https://i.postimg.cc/RhZgpKjF/istockphoto_1438352339_612x612.webp", img2: "https://i.postimg.cc/vTZ02fpc/istockphoto_1479879699_612x612.webp", img3: "https://i.postimg.cc/cCLFkwVv/istockphoto_2251087594_612x612.webp" },
+                { id: 4, name: "Real Estate", price: 4550, oldPrice: 6500, desc: "Display property sales and rentals systematically.", img1: "https://i.postimg.cc/NM96KbqV/Custom_Websites_Delivered_Fast.jpg", img2: "https://i.postimg.cc/hjzLXMW6/Just_Home_Real_Estate_HTML_Template.jpg", img3: "https://i.postimg.cc/TwLVKQMB/Real_Estate_Landing_Page_Replication_Rukayat_Yaro.jpg" },
+                { id: 5, name: "Restaurant", price: 2660, oldPrice: 3800, desc: "For displaying menus and accepting online orders.", img1: "https://i.postimg.cc/YCTqpxRp/6012fff9a191232af8b210dcd88d9d8d.jpg", img2: "https://i.postimg.cc/Cx9LF47h/de15fab868c6d3749340e5b385519549.jpg", img3: "https://i.postimg.cc/dVgtq96V/26160bd4b1aa17c35eef872911b4e738.jpg" },
+                { id: 6, name: "Booking System", price: 4200, oldPrice: 6000, desc: "Can be used for hotels, clinics, or appointments.", img1: "https://i.postimg.cc/MGD6y8x6/73f7608b55dc5d1da4a030dc0183b395.jpg", img2: "https://i.postimg.cc/k5cJxd9M/e6bb8cc4135cf36a3fb3ff6c675726da.jpg", img3: "https://i.postimg.cc/hGrD9qgP/0e1b9429313fa2a3d04065174caf2495.jpg" },
+                { id: 7, name: "News Portal", price: 3640, oldPrice: 5200, desc: "For presenting information and news in real-time.", img1: "https://i.postimg.cc/fTL8s7JM/78dc79146636c29a5f779ca17b1c8f13.jpg", img2: "https://i.postimg.cc/xTC6QGcT/09ee509f5d646bf0a1e8772cc49c90c4.jpg", img3: "https://i.postimg.cc/Dy03NXTR/f3929c28c67ae0ae18b98b3aa9044d3d.jpg" },
+                { id: 8, name: "Clinic Website", price: 4060, oldPrice: 5800, desc: "For clinic info and patient appointment management.", img1: "https://i.postimg.cc/vHN3Z1Vw/cafc30442f079addc2d5ee0aab9cc9ad.jpg", img2: "https://i.postimg.cc/MKT9w0v6/48c971707828863ab1a013b7a0a08a80.jpg", img3: "https://i.postimg.cc/m258gcHx/307537a94e40b044dc712cc99efb14db.jpg" },
+                { id: 9, name: "Personal Blog", price: 1750, oldPrice: 2500, desc: "For writing articles and sharing your experiences.", img1: "https://i.postimg.cc/15jJ3gqs/0cacea43bd4fc66596e90676603b1380.jpg", img2: "https://i.postimg.cc/jdFZSW7R/5a706bc9941dba8ddd5c1f9c60f0e61e.jpg", img3: "https://i.postimg.cc/tCM241xH/48bc51045edcfbdee20290fa442201b6.jpg" },
+                { id: 10, name: "Organization (NGO)", price: 2940, oldPrice: 4200, desc: "To showcase activities and mission of the organization.", img1: "https://i.postimg.cc/J42Pzykn/7957363974338929ca9c6138765eeeb4.jpg", img2: "https://i.postimg.cc/8P0tzF6f/1788ed92239bc6fcea37c3f3ad753d1f.jpg", img3: "https://i.postimg.cc/bNB3wGtG/b28dcadca425850e9a02ddbc853dca18.jpg" }
+            ]
+        }
+    };
+
+    function updateUI() {
+        const lang = document.getElementById('langSwitch').value;
+        const data = webData[lang] || webData['my'];
+        
+        document.getElementById('promoText').innerText = data.promo;
+        document.getElementById('heroTitle').innerText = data.heroT;
+        document.getElementById('heroSubtitle').innerText = data.heroS;
+        document.getElementById('mainTitle').innerText = data.mainTitle;
+        
+        const grid = document.getElementById('websiteGrid');
+        grid.innerHTML = '';
+        data.types.forEach(web => {
+            const card = document.createElement('div');
+            card.className = 'card glass p-8 rounded-3xl text-center flex flex-col justify-between h-full';
+            card.innerHTML = `
+                <div>
+                    <h3 class="text-xl font-bold mb-4">${web.name}</h3>
+                    <div class="mb-6">
+                        <span class="text-slate-500 line-through text-sm block">${web.oldPrice.toLocaleString()} Baht</span>
+                        <span class="text-2xl font-black text-sky-400">${web.price.toLocaleString()} Baht</span>
+                    </div>
+                </div>
+                <button class="w-full py-3 glass rounded-xl font-bold text-sky-400 border border-sky-400/30 hover:bg-sky-500 hover:text-white transition-all" onclick="showDetails(${web.id})">${data.btnLabel}</button>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    function showDetails(id) {
+        const lang = document.getElementById('langSwitch').value;
+        const currentData = webData[lang] || webData['my'];
+        const selected = currentData.types.find(w => w.id === id);
+        
+        document.getElementById('detTitle').innerText = selected.name;
+        document.getElementById('detOldPrice').innerText = selected.oldPrice.toLocaleString() + " Baht";
+        document.getElementById('detPrice').innerText = currentData.priceLabel + selected.price.toLocaleString() + " Baht";
+        document.getElementById('detDesc').innerText = selected.desc;
+        document.getElementById('buyBtnText').innerText = currentData.buyBtn;
+        document.getElementById('backText').innerText = currentData.back;
+        
+        const photoGroup = document.getElementById('detPhotos');
+        photoGroup.innerHTML = `
+            <img src="${selected.img1}" class="w-full rounded-3xl shadow-2xl" onerror="this.style.display='none'">
+            <img src="${selected.img2}" class="w-full rounded-3xl shadow-2xl" onerror="this.style.display='none'">
+            <img src="${selected.img3}" class="w-full rounded-3xl shadow-2xl" onerror="this.style.display='none'">
+        `;
+
+        document.getElementById('main-page').style.display = 'none';
+        document.getElementById('detail-page').style.display = 'block';
+        window.scrollTo(0, 0);
+    }
+
+    function goHome() {
+        document.getElementById('main-page').style.display = 'block';
+        document.getElementById('detail-page').style.display = 'none';
+        window.scrollTo(0, 0);
+    }
+
+    updateUI();
+</script>
+
+<div id="chat-icon" onclick="toggleChat()" style="position: fixed; bottom: 30px; right: 20px; width: 60px; height: 60px; background: #000; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,0.4); z-index: 9999; border: 2px solid #fff;">
+    <i class="fab fa-facebook-messenger"></i>
+</div>
+
+<div id="chat-box" style="display: none; position: fixed; bottom: 100px; right: 20px; width: 350px; max-width: 90%; height: 550px; background: #fff; border-radius: 20px; box-shadow: 0 15px 50px rgba(0,0,0,0.3); flex-direction: column; overflow: hidden; z-index: 9999; border: 1px solid #ddd; animation: slideUp 0.4s ease;">
+    <div style="background: #000; color: #fff; padding: 18px; font-weight: bold; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <div style="font-size: 15px; letter-spacing: 1px;">WEB EXPERT AI</div>
+            <div style="font-size: 10px; color: #4caf50; font-weight: normal;">● Online Now</div>
+        </div>
+        <i class="fas fa-times" onclick="toggleChat()" style="cursor: pointer; font-size: 20px; opacity: 0.7;"></i>
+    </div>
+    
+    <div id="chat-content" style="flex: 1; padding: 15px; overflow-y: auto; font-size: 14px; background: transparent; display: flex; flex-direction: column; gap: 12px; scroll-behavior: smooth;">
+    </div>
+
+    <div style="padding: 12px; border-top: 1px solid rgba(255,255,255,0.1);">
+        <div style="display: flex; gap: 8px; align-items: center;">
+            <input type="text" id="chat-input" placeholder="သိလိုသည်များကို မေးမြန်းပါ..." style="flex: 1; padding: 10px 15px; background: #334155; border: 1px solid #475569; border-radius: 25px; outline: none; font-size: 14px; color: white;">
+            <button onclick="handleSend()" style="background: var(--accent-gradient); color: #fff; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer;">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Integration logic from existing code
+    let askedQuestions = [];
+    const allQuestions = (lang) => [
+        {t: "ဘာ Website တွေရှိလဲ", v: "types"},
+        {t: "ဈေးနှုန်းစာရင်းကြည့်မယ်", v: "price"},
+        {t: "ဘယ်လောက်ကြာမလဲ", v: "duration"},
+        {t: "Feature တွေဘာပါလဲ", v: "features"},
+        {t: "Payment Info", v: "payment"},
+        {t: "အခုပဲအပ်နှံမယ်/ဆက်သွယ်ရန်", v: "contact"}
+    ];
+
+    function toggleChat() {
+        const box = document.getElementById('chat-box');
+        box.style.display = (box.style.display === 'none' || box.style.display === '') ? 'flex' : 'none';
+        if (box.style.display === 'flex' && document.getElementById('chat-content').innerHTML.trim() === "") sendWelcome();
+    }
+
+    function sendWelcome() {
+        const lang = document.getElementById('langSwitch').value;
+        botReply("မင်္ဂလာပါ! WEB EXPERT မှ ကြိုဆိုပါတယ်။ လူကြီးမင်း သိလိုသည်များကို အောက်ပါ ခလုတ်များမှတစ်ဆင့် မေးမြန်းနိုင်ပါပြီ။", allQuestions(lang));
+    }
+
+    function botReply(text, buttons = []) {
+        const content = document.getElementById('chat-content');
+        const msgDiv = document.createElement('div');
+        msgDiv.style.cssText = "align-self: flex-start; max-width: 90%; animation: fadeIn 0.3s ease;";
+        msgDiv.innerHTML = `<div style="background: #334155; color: #fff; padding: 12px 15px; border-radius: 18px 18px 18px 5px; line-height: 1.5; font-size: 13px;">${text}</div>`;
+        content.appendChild(msgDiv);
+
+        if(buttons.length > 0) {
+            const btnBox = document.createElement('div');
+            btnBox.style.cssText = "display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;";
+            buttons.forEach(b => {
+                const btn = document.createElement('button');
+                btn.innerText = b.t;
+                btn.style.cssText = "background: rgba(56, 189, 248, 0.1); border: 1px solid #38bdf8; color: #38bdf8; padding: 5px 10px; border-radius: 15px; cursor: pointer; font-size: 11px; font-weight: bold;";
+                btn.onclick = () => { userMessage(b.t); processInput(b.v); };
+                btnBox.appendChild(btn);
+            });
+            content.appendChild(btnBox);
+        }
+        content.scrollTop = content.scrollHeight;
+    }
+
+    function userMessage(text) {
+        const content = document.getElementById('chat-content');
+        const msgDiv = document.createElement('div');
+        msgDiv.style.cssText = "align-self: flex-end; max-width: 85%;";
+        msgDiv.innerHTML = `<div style="background: var(--accent-gradient); color: #fff; padding: 10px 15px; border-radius: 18px 18px 5px 18px; line-height: 1.5; font-size: 13px;">${text}</div>`;
+        content.appendChild(msgDiv);
+        content.scrollTop = content.scrollHeight;
+    }
+
+    function processInput(input) {
+        const lang = document.getElementById('langSwitch').value;
+        const data = webData[lang] || webData['my'];
+        const qList = allQuestions(lang);
+        setTimeout(() => {
+            let res = "";
+            if (input === "types") res = "<b>Website အမျိုးအစားများ:</b><br>" + data.types.map(t => "• " + t.name).join("<br>");
+            else if (input === "price") res = "<b>၃၀% လျှော့စျေးစျေးနှုန်းစာရင်း:</b><br>" + data.types.map(t => `• ${t.name}: <b>${t.price} Baht</b>`).join("<br>");
+            else if (input === "payment") res = "<b>PromptPay</b> (Thailand) နှင့် <b>KPay, Wave</b> (Myanmar) တို့ဖြင့် ပေးချေနိုင်ပါတယ်။";
+            else if (input === "contact") res = "Messenger သို့မဟုတ် ဖုန်း 0618201594 သို့ ဆက်သွယ်နိုင်ပါပြီ။";
+            else res = "လူကြီးမင်းအတွက် အကောင်းဆုံး ဝန်ဆောင်မှုပေးရန် အသင့်ရှိနေပါတယ်ခင်ဗျာ။";
+            botReply(res, qList);
+        }, 400);
+    }
+</script>
+
+</body>
+</html>
